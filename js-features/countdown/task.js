@@ -29,10 +29,10 @@ let timerId = setInterval(() => {
         alert('Вы победили в конкурсе!');
         clearInterval(timerId);
 
-        // downloadClick.click();
+        downloadClick.click();
 
-        let newLocation = 'https://www.meme-arsenal.com/memes/a313012eef9d8a2e27ca15dcf05083f9.jpg';
-        window.location = newLocation;
+        // let newLocation = '/bhj-homeworks/js-features/countdown/extended-demo.gif';
+        // window.location = newLocation;
     } else {
         startTime --;
         writeTime();        

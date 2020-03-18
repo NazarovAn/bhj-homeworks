@@ -2,12 +2,16 @@
 
 const subMenu = Array.from(document.getElementsByClassName('menu_sub'));
 
-function isMenuActive() {
-    return subMenu.includes(document.querySelector('.menu_active'))
+function isMenuActive(i) {
+    let closestMenu = subMenu[i].closest('.menu_main');    
+    
+    return subMenu.includes(closestMenu.querySelector('.menu_active'))
 }
 
-function closeMenu() {
-    let index = subMenu.indexOf(document.querySelector('.menu_active'));
+function closeMenu(i) {
+    let closestMenu = subMenu[i].closest('.menu_main');    
+    
+    let index = subMenu.indexOf(closestMenu.querySelector('.menu_active'));
     subMenu[index].className = 'menu menu_sub';
 }
 
@@ -16,10 +20,10 @@ for (let i = 0; i < subMenu.length; i++) {
         e.preventDefault();
 
         if (subMenu[i].className === 'menu menu_sub menu_active') {
-            closeMenu();
+            closeMenu(i);
             return
-        } else if(isMenuActive()){
-            closeMenu();            
+        } else if(isMenuActive(i)){
+            closeMenu(i);            
         }
 
         subMenu[i].className = 'menu menu_sub menu_active';

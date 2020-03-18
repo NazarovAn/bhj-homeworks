@@ -4,11 +4,34 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.timer = container.querySelector('.timer');
+    this.output = document.querySelector('.output');
 
     this.reset();
 
     this.registerEvents();
   }
+
+  countdown() {
+    clearInterval(this.countDown);
+    this.timer.textContent = this.wordElement.textContent.length;
+    this.countDown = setInterval(() => {
+        if (this.timer.textContent == 0) {
+          clearInterval(this.countDown);
+          this.fail();
+          return        
+        }
+
+        this.timer.textContent --;
+              
+      },1000);
+  }
+
+  writePrinted(pressed) {
+    if(pressed === 'shift' || pressed === 'alt' || pressed === 'control'){return};
+    this.output.textContent = `${this.output.textContent}${pressed}`;    
+  }
+  
 
   reset() {
     this.setNewWord();
@@ -16,14 +39,25 @@ class Game {
     this.lossElement.textContent = 0;
   }
 
-  registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода слова вызываем this.success()
-      При неправильном вводе символа - this.fail();
-     */
+   registerEvents() {
+    let pressedBtn = '';      
+
+    document.addEventListener('keyup', (e) => {
+      pressedBtn = e.key.toLowerCase();
+      let currentSymbol = this.currentSymbol.textContent.toLowerCase(),
+          currentSymbolUnicode = currentSymbol.charCodeAt(0);
+          
+      
+      this.writePrinted(pressedBtn);
+
+      if(pressedBtn === 'shift' || pressedBtn === 'alt' || pressedBtn === 'control'){
+        return
+      } else if(pressedBtn.charCodeAt(0) === currentSymbolUnicode){
+        this.success();
+      } else {
+        this.fail();
+      }
+    });
   }
 
   success() {
@@ -38,6 +72,7 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    this.output.textContent = '';
   }
 
   fail() {
@@ -46,27 +81,29 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    this.output.textContent = '';
   }
 
   setNewWord() {
     const word = this.getWord();
 
     this.renderWord(word);
+    this.countdown();
   }
 
   getWord() {
     const words = [
-        'bob',
-        'awesome',
-        'netology',
-        'hello',
+        'Меня зовут Bob',
+        '!ого awesome!',
+        'учусь в Netology',
+        'hello, Друг',
         'kitty',
         'rock',
-        'youtube',
-        'popcorn',
-        'cinema',
+        'YouTube',
+        'Popcorn',
+        'Кино - это "cinema"',
         'love',
-        'javascript'
+        'JavaScript'
       ],
       index = Math.floor(Math.random() * words.length);
 

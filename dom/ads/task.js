@@ -10,7 +10,7 @@ let nextItem = () => {
     dataSpeed = rotatorItems[i].getAttribute('data-speed');
     rotatorItems[i].style.color = dataColor;
     
-    let intervalId = setInterval(() => {
+    let intervalId = setTimeout(() => {
         if(i === 5){
             rotatorItems[i].classList.remove('rotator__case_active');
             i = 0;
@@ -21,7 +21,6 @@ let nextItem = () => {
             i++;
         }
         
-        clearInterval(intervalId);
         nextItem();
     }, dataSpeed);
 }

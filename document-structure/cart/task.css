@@ -13,7 +13,6 @@ body {
 .cart__product-count {
   position: absolute;
   top: 0;
-  right; 0;
   border: 2px solid green;
   border-radius: 50%;
   padding: 2px 5px;
@@ -88,4 +87,19 @@ body {
 
 .product-shadow {
   position: absolute;
+}
+
+.cart__product-delete {
+  position: absolute;
+  top: 0;
+  border: 2px solid red;
+  border-radius: 50%;
+  padding: 2px 5px;
+  right: 12px;
+  text-decoration: none;
+}
+
+.product__image-animation {
+  position: absolute;
+  z-index: 1;
 }

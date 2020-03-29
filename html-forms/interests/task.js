@@ -33,9 +33,7 @@ function toggleCheckParent(element){
     }
 }
 
-for(let i = 0; i < interestsLi.length; i++){
-    interestsLi[i].addEventListener('change', (e) => {
-        toggleCheckAllChildren(e);
-        toggleCheckParent(e);
-    }
-)}
+interestsLi.forEach((item) => item.addEventListener('change', (e) => {
+    toggleCheckAllChildren(e);
+    toggleCheckParent(e);
+}));

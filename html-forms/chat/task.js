@@ -34,12 +34,21 @@ function writeTime() {
 }
 
 function writeMessage(text) {
-    messages.insertAdjacentHTML('beforeEnd',`
-                        <div class="message">
+    if (text != input.value) {
+        messages.insertAdjacentHTML('beforeEnd',`
+                            <div class="message">
+                                <div class="message__time">${writeTime()}</div>
+                                <div class="message__text">${text}</div>
+                            </div>
+        `);
+    } else {
+        messages.insertAdjacentHTML('beforeEnd',`
+                        <div class="message message_client">
                             <div class="message__time">${writeTime()}</div>
                             <div class="message__text">${text}</div>
                         </div>
-    `);       
+        `);
+    }    
 }
 
 function scrollDown(){

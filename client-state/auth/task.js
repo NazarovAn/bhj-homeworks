@@ -13,26 +13,14 @@ if(user == null){
     signBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        let formData = new FormData(document.forms.signin__form),
-            login = formData.get('login'),
-            password = formData.get('password'),
-            userID = {login,password};        
-
-        sendForm(formData, userID);
+        let formData = new FormData(document.forms.signin__form);
+        sendForm(formData);
     });
 } else {
-    let formData = new FormData,        
-        login = user.login,
-        password = user.password,
-        userID = {user:login, password:password};
-
-    formData.append('login', `${user.login}`);
-    formData.append('password', `${user.password}`);   
-
-    sendForm(formData, userID);
+    welcomeUser(user);
 }
 
-function sendForm(formData, userID) {
+function sendForm(formData) {
     let xhr = new XMLHttpRequest;
     xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/auth.php');
     xhr.responseType = 'json';
@@ -45,16 +33,20 @@ function sendForm(formData, userID) {
         }
 
         if(user == null){
-            localStorage.setItem('userID', JSON.stringify(userID));
+            localStorage.setItem('userID', JSON.stringify(xhr.response.user_id));
             signin.classList.remove('signin_active');                       
         }
 
-        welcome.classList.add('welcome_active');
-        welcomeID.innerText = xhr.response.user_id;
-
-        logout.addEventListener('click', () => {
-            localStorage.removeItem('userID');
-            location.reload();
-        })
+        welcomeUser(xhr.response.user_id);        
     })
 } 
+
+function welcomeUser(user){
+    welcome.classList.add('welcome_active');
+    welcomeID.innerText = user;
+
+    logout.addEventListener('click', () => {
+        localStorage.removeItem('userID');
+        location.reload();
+    })
+}

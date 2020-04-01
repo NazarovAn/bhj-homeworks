@@ -10,6 +10,6 @@ editor.addEventListener('input', () => {
 })
 
 clearBtn.addEventListener('click', () => {
-    localStorage.clear();
+    localStorage.removeItem('inputValue');
     editor.value = '';
 })

@@ -11,7 +11,7 @@ function setControlsListners(element) {
         controlValue = element.querySelector('.product__quantity-value');
 
         controlDec.addEventListener('click', () => {
-            if(controlValue.innerText <= 0){
+            if(controlValue.innerText <= 1){
                 return
             } else {
                 controlValue.innerText --

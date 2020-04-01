@@ -1,61 +1,59 @@
 'use strict';
 
 const addButton = document.getElementById('tasks__add'),
-      taskList = document.getElementById('tasks__list');
+      taskList = document.getElementById('tasks__list'),
+      input = document.getElementById('task__input');
+      
+setTasksList();
 
-taskList.innerHTML = JSON.parse(localStorage.getItem('taskListLocal'));
+addButton.addEventListener('click', (e) => {
+    if(input.value === ''){return};
+    let task = input.value;
 
-taskList.querySelectorAll('.task__remove').forEach((item) => item.addEventListener('click', (elem) => {
-    elem.preventDefault();
+    placeNewElement(task);
+    addRemove();
+    storeTasks();
 
-    taskList.removeChild(item.closest('.task')); 
+    input.value = '';   
+})
 
-    localStorage.setItem('taskListLocal', JSON.stringify(taskList.innerHTML));
-}));
+function placeNewElement(taskText) {
+    taskList.insertAdjacentHTML('beforeend', `<div class="task"><div class="task__title">${taskText}</div><a href="#" class="task__remove">&times;</a></div>`);
+}
 
-addButton.addEventListener('click', (button) => {
-    button.preventDefault();
-    new Task;
-});
+function addRemove(){
+    let removeList = document.querySelectorAll('.task__remove'),
+        lastItem = removeList.length - 1,
+        tasks = taskList.querySelectorAll('.task');
 
-class Task {
-    constructor(){
-        this.taskIntput = document.getElementById('task__input');
-        this.taskList = document.getElementById('tasks__list'); 
-        this.inputText = this.taskIntput.value;       
+    removeList[lastItem].addEventListener('click', () => {
+        taskList.removeChild(tasks[lastItem]);
+        storeTasks();       
+    })
+}
 
-        this.setNewElement();
-        this.setRemove();
-        this.storeTasks();              
+function storeTasks() {
+    let titles = taskList.querySelectorAll('.task__title'),
+        storage = [];
+
+    titles.forEach((e) => {
+        storage.push(e.textContent);
+    })
+
+    if(storage.length === 0){
+        localStorage.removeItem('tasks');
+        return
     }
 
-    setNewElement() {
-        if(this.inputText == 0){
-            return
-        }
-        this.newElement = `<div class="task"><div class="task__title">${this.inputText}</div><a href="#" class="task__remove">&times;</a></div>`
-        this.taskList.insertAdjacentHTML('beforeEnd', this.newElement);
-    }
+    localStorage.setItem('tasks', JSON.stringify(storage));
+}
 
-    getLatestElement() {
-        this.indexOfLastTask = this.taskList.querySelectorAll('.task').length - 1;
-        return this.taskList.querySelectorAll('.task')[this.indexOfLastTask];        
-    }
+function setTasksList(){
+    let storageList = JSON.parse(localStorage.getItem('tasks'));
+    if(storageList == null){return};
 
-    setRemove() {
-        this.taskToRemove = this.getLatestElement();
-        this.removeButton = this.taskToRemove.querySelector('.task__remove');
-
-        this.removeButton.addEventListener('click', () => {
-            this.taskList.removeChild(this.taskToRemove);
-            this.storeTasks();            
-        })
-    }
-
-    storeTasks() {
-        this.relevantTaskList = document.getElementById('tasks__list'),
-        this.relevantTaskListJSON = JSON.stringify(this.relevantTaskList.innerHTML);
-
-        localStorage.setItem('taskListLocal', this.relevantTaskListJSON);
-    }
+    storageList.forEach((e) => {
+        placeNewElement(e);
+        addRemove();
+    })    
 }
